@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SafeIdentity</string>
+    <string name="login_activity">Login Activity</string>
+    <string name="webview_activity">WebView Activity</string>
+    <string name="api_test_activity">ApiTest Activity</string>
+    <string name="sso_api_test_activity">SsoApiTest Activity</string>
+    <string name="list_view_activity">ListView Activity</string>
+    <string name="getUUID_activity">GetUUID Activity</string>
+    <string name="exp_page_url">http://192.168.70.155:7080/m/android/exp_mobilesso.jsp</string>
+    <string name="action_settings">Settings</string>
+    <string name="userId">사용자 ID</string>
+    <string name="userPwd">패스워드</string>
+    <string name="exp_login">Express Login</string>
+    <string name="std_login">Standard Login</string>
+    <string name="ent_login">Enterprise Login</string>
+    <string name="logout">Logout</string>
+    <string name="tag_name">태그명, 사용자ID</string>
+    <string name="tag_value">태그값, 패스워드</string>
+    <!-- Security ID를 사용 할지 여부  TRUE(사용)/FALSE(사용안함)로 구분 -->
+    <string name="SEC_ID_FLAG">FALSE</string>
+</resources>
