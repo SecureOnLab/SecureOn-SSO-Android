@@ -1,6 +1,7 @@
 package kr.co.secureon.sso.sample;
 
 public class SampleVO {
+
 	private static String pageURL;
 	private static String tokenKey;
 	private static String token;
@@ -10,59 +11,76 @@ public class SampleVO {
 	private static byte[] secId;
 	private static int ssoErrorCode;
 	private static int networkStatus;
-	
-	public String getPageURL() {
+
+	public static String getPageURL() {
 		return pageURL;
 	}
-	public void setPageURL(String pageURL) {
+
+	public static void setPageURL(String pageURL) {
 		SampleVO.pageURL = pageURL;
 	}
-	public String getTokenKey() {
+
+	public static String getTokenKey() {
 		return tokenKey;
 	}
-	public void setTokenKey(String tokenKey) {
+
+	public static void setTokenKey(String tokenKey) {
 		SampleVO.tokenKey = tokenKey;
 	}
-	public String getToken() {
+
+	public static String getToken() {
 		return token;
 	}
-	public void setToken(String token) {
+
+	public static void setToken(String token) {
 		SampleVO.token = token;
 	}
-	public String getClientIp() {
+
+	public static String getClientIp() {
 		return clientIp;
 	}
-	public void setClientIp(String clientIp) {
+
+	public static void setClientIp(String clientIp) {
 		SampleVO.clientIp = clientIp;
 	}
-	public String getUserId() {
+
+	public static String getUserId() {
 		return userId;
 	}
-	public void setUserId(String userId) {
+
+	public static void setUserId(String userId) {
 		SampleVO.userId = userId;
 	}
-	public String getUserPwd() {
+
+	public static String getUserPwd() {
 		return userPwd;
 	}
-	public void setUserPwd(String userPwd) {
+
+	public static void setUserPwd(String userPwd) {
 		SampleVO.userPwd = userPwd;
 	}
-	public byte[] getSecId() {
+
+	public static byte[] getSecId() {
 		return secId;
 	}
-	public void setSecId(byte[] secId) {
+
+	public static void setSecId(byte[] secId) {
 		SampleVO.secId = secId;
 	}
-	public int getSsoErrorCode() {
+
+	public static int getSsoErrorCode() {
 		return ssoErrorCode;
 	}
-	public void setSsoErrorCode(int ssoErrorCode) {
+
+	public static void setSsoErrorCode(int ssoErrorCode) {
 		SampleVO.ssoErrorCode = ssoErrorCode;
 	}
-	public int getNetworkStatus() {
+
+	public static int getNetworkStatus() {
 		return networkStatus;
 	}
-	public void setNetworkStatus(int networkStatus) {
+
+	public static void setNetworkStatus(int networkStatus) {
 		SampleVO.networkStatus = networkStatus;
 	}
 }

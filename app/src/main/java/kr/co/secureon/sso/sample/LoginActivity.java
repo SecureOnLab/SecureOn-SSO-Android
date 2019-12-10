@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
 		
 		Log.d("smoh", getClass().getSimpleName() + ".exp_page_url : " + String.valueOf(getString(R.string.exp_page_url)));
 		sampleVO.setPageURL(getString(R.string.exp_page_url));
-		sampleVO.setClientIp("127.0.0.1");
+		sampleVO.setClientIp("192.168.2.2");
 		
 		if(Build.VERSION.SDK_INT > 8) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
