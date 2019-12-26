@@ -21,11 +21,13 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends AppCompatActivity {
 	WebView webView;
 	EditText urlEditText;
 	Button goBtn, refreshBtn, backBtn, homeBtn, stopBtn, loginActivityBtn;

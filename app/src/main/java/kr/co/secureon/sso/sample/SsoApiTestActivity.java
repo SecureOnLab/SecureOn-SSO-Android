@@ -20,16 +20,18 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-public class SsoApiTestActivity extends Activity {
+public class SsoApiTestActivity extends AppCompatActivity {
 	SampleVO sampleVO = new SampleVO();
 	LinearLayout ssoApiTestLayout, firstLayout, secondLayout, thirdLayout, fourthLayout;
 	TextView firstText, secondText, resultText;
 	EditText modeEditText, firstEditText, secondEditText;
-	Button actionBtn, loginActivityBtn, listViewActivityBtn;
+	Button actionBtn;
 	RadioButton oneRadioBtn, subRadioBtn;
 	RadioButton trueRadioBtn, falseRadioBtn;
 	String secIdFlag;	//secId 사용유무
@@ -42,11 +44,7 @@ public class SsoApiTestActivity extends Activity {
 		if(Build.VERSION.SDK_INT > 8) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 		}
-		
-		//타이틀바 보이지 않도록 하기 setContentView 이전에 써야한다.
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(Window.FEATURE_NO_TITLE, Window.FEATURE_NO_TITLE);
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.actvity_sso_api_test);
 		
@@ -78,9 +76,7 @@ public class SsoApiTestActivity extends Activity {
 		secondEditText = (EditText)findViewById(R.id.secondEditText);
 		
 		actionBtn = (Button)findViewById(R.id.actionBtn);
-		loginActivityBtn = (Button)findViewById(R.id.loginActivityBtn);
-		listViewActivityBtn = (Button)findViewById(R.id.listViewActivityBtn);
-		
+
 		oneRadioBtn = (RadioButton)findViewById(R.id.oneRadioBtn);
 		subRadioBtn = (RadioButton)findViewById(R.id.subRadioBtn);
 		
@@ -91,6 +87,8 @@ public class SsoApiTestActivity extends Activity {
 			if(getIntent().getStringExtra("mode") != null) {
 				Log.d("smoh",  getClass().getSimpleName() + ".mode : " + getIntent().getStringExtra("mode"));
 				mode = getIntent().getStringExtra("mode");
+
+				setTitle(mode + " API 테스트");
 			}
 		}else {
 			loginActivity();
@@ -111,27 +109,7 @@ public class SsoApiTestActivity extends Activity {
 				modeActionBranch();
 			}
 		});
-		
-		loginActivityBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
-				loginIntent.putExtra("ssoToken", mobileSsoAPI.getToken());
-				
-				if("TRUE".equalsIgnoreCase(secIdFlag)) {
-					loginIntent.putExtra("secId", secId);
-				}
-				startActivity(loginIntent);
-			}
-		});
-		
-		listViewActivityBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent listViewIntent = new Intent(getApplicationContext(), ListViewActivity.class);
-				startActivity(listViewIntent);
-			}
-		});
+
 	}
 	
 	private void modeViewBranch() {

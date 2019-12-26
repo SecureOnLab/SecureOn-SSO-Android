@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +30,11 @@ import com.sf.msso.SsoUtil;
 public class LoginActivity extends Activity {
 	SampleVO sampleVO = new SampleVO();
 	
-	LinearLayout loginLayout;
-	Button entLoginBtn, logoutBtn, webViewActivityBtn, mobileSSOBAppBtn, stdLoginBtn, expLoginBtn, listViewBtn;
+	ScrollView scrollView;
+	Button entLoginBtn, stdLoginBtn, expLoginBtn;
 	
 	TextView resultText;
 	MobileSsoAPI mobileSsoAPI;
-	String encSsoToken;
 	String secIdFlag;	//secId 사용유무
 	byte[] secId = null;
 	EditText userIdEditText, userPwdEditText;
@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
 		
 		Log.d("smoh", getClass().getSimpleName() + ".exp_page_url : " + String.valueOf(getString(R.string.exp_page_url)));
 		sampleVO.setPageURL(getString(R.string.exp_page_url));
-		sampleVO.setClientIp("192.168.2.2");
+		sampleVO.setClientIp("127.0.0.1");
 		
 		if(Build.VERSION.SDK_INT > 8) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
@@ -64,23 +64,18 @@ public class LoginActivity extends Activity {
 		}
 		
 		mobileSsoAPI = new MobileSsoAPI(this, sampleVO.getPageURL());
+
+		scrollView = findViewById(R.id.scrollView);
 		
-		loginLayout = (LinearLayout)findViewById(R.id.loginLayout);
-		
-		userIdEditText = (EditText)findViewById(R.id.userId);
-		userPwdEditText = (EditText)findViewById(R.id.userPwd);
-		entLoginBtn = (Button)findViewById(R.id.entLoginBtn);
-		logoutBtn = (Button)findViewById(R.id.logoutBtn);
-		stdLoginBtn = (Button) findViewById(R.id.stdLoginBtn);
-		expLoginBtn = (Button)findViewById(R.id.expLoginBtn);
-		webViewActivityBtn = (Button)findViewById(R.id.webViewActivityBtn);
-		mobileSSOBAppBtn = (Button)findViewById(R.id.mobileSSOBAppBtn);
-		listViewBtn = (Button)findViewById(R.id.listViewBtn);
-		
+		userIdEditText = findViewById(R.id.userId);
+		userPwdEditText = findViewById(R.id.userPwd);
+		entLoginBtn = findViewById(R.id.entLoginBtn);
+		stdLoginBtn = findViewById(R.id.stdLoginBtn);
+		expLoginBtn = findViewById(R.id.expLoginBtn);
+
 		resultText = (TextView)findViewById(R.id.resultText);
 		resultText.setEnabled(false);	//textview 수정 안되도록 수정
-		logoutBtn.setVisibility(View.INVISIBLE);
-		
+
 		if(getIntent() != null) {
 			//웹에서 온경우
 			Uri uri = getIntent().getData();
@@ -165,7 +160,6 @@ public class LoginActivity extends Activity {
 									entLoginBtn.setVisibility(View.INVISIBLE);
 									stdLoginBtn.setVisibility(View.INVISIBLE);
 									expLoginBtn.setVisibility(View.INVISIBLE);
-									logoutBtn.setVisibility(View.VISIBLE);
 								} else {
 									resultText.setText("SSO 에러 코드 : " + sampleVO.getSsoErrorCode());
 								}
@@ -182,14 +176,6 @@ public class LoginActivity extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			//화면 클릭 시 키패드 숨기기 이벤트
-			loginLayout.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					keyPadHide();
-				}
-			});
 			
 			//id 이벤트 에서 키 입력 리스너
 			userIdEditText.setOnKeyListener(new OnKeyListener() {
@@ -235,7 +221,7 @@ public class LoginActivity extends Activity {
 							userPwdEditText.requestFocus();
 							return;
 						}
-						
+
 						sampleVO.setUserId(userId);
 						sampleVO.setUserPwd(userPwd);
 						
@@ -262,10 +248,9 @@ public class LoginActivity extends Activity {
 									mobileSsoAPI.deleteToken();
 									mobileSsoAPI.setToken(sampleVO.getUserId().toString(), sampleVO.getToken());
 									resultText.setText(sampleVO.getUserId().toString() + "님이 로그인 하였습니다.");
-									entLoginBtn.setVisibility(View.INVISIBLE);
-									stdLoginBtn.setVisibility(View.INVISIBLE);
-									expLoginBtn.setVisibility(View.INVISIBLE);
-									logoutBtn.setVisibility(View.VISIBLE);
+
+									Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+									startActivity(intent);
 								}
 							} else {
 								resultText.setText("SSO 에러 코드 : " + sampleVO.getSsoErrorCode());
@@ -279,58 +264,12 @@ public class LoginActivity extends Activity {
 						e.printStackTrace();
 					} finally {
 						keyPadHide();
-						editTextClean();
+//						editTextClean();
 					}
 				}
 			});
 			
-			//로그아웃 버튼 클릭 이벤트
-			logoutBtn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if(mobileSsoAPI.getToken() == null || "".equals(mobileSsoAPI.getToken())) {
-						Toast.makeText(getApplicationContext(), "SSO 토큰이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-					} else {
-						try {
-							mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), sampleVO.getClientIp());
-							
-							if(mobileSsoAPI.deleteToken() == 0) {
-								resultText.setText("로그아웃 되었습니다.");
-								entLoginBtn.setVisibility(View.VISIBLE);
-								stdLoginBtn.setVisibility(View.VISIBLE);
-								expLoginBtn.setVisibility(View.VISIBLE);
-								logoutBtn.setVisibility(View.INVISIBLE);
-							} else {
-								Log.d("smoh", getClass().getSimpleName() + ".deleteToken : " + String.valueOf(mobileSsoAPI.deleteToken()));
-								resultText.setText("로그아웃에 실패하였습니다.");
-							}
-						} catch (IllegalStateException e) {
-							Log.d("smoh", e.getMessage());
-						} catch (IOException e) {
-							Log.d("smoh", e.getMessage());
-						}
-					}
-				}
-			});
-			
-			//웹뷰 버튼 클릭 이벤트
-			webViewActivityBtn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent webViewIntent = new Intent(getApplicationContext(), WebViewActivity.class);
-					
-					//ssoToken 평문을 암호화하여 보낸다.
-					encSsoToken = mobileSsoAPI.enc(mobileSsoAPI.getToken());
-					Log.d("smoh", getClass().getSimpleName() + ".encSsoToken : " + encSsoToken);
-					webViewIntent.putExtra("ssoToken", encSsoToken);
-					//20141128 modify smoh - for secIdFlag 추가
-					if("TRUE".equalsIgnoreCase(secIdFlag)) {
-						Log.d("smoh", getClass().getSimpleName() + ".secId : " + new String(sampleVO.getSecId()));
-						webViewIntent.putExtra("secId", sampleVO.getSecId());
-					}
-					startActivity(webViewIntent);
-				}
-			});
+
 			
 			//20141128 add smoh - for regUserSession() 추가
 			//standard login 버튼 클릭 이벤트
@@ -373,7 +312,6 @@ public class LoginActivity extends Activity {
 									entLoginBtn.setVisibility(View.INVISIBLE);
 									stdLoginBtn.setVisibility(View.INVISIBLE);
 									expLoginBtn.setVisibility(View.INVISIBLE);
-									logoutBtn.setVisibility(View.VISIBLE);
 								}
 							} else {
 								resultText.setText("SSO 에러 코드 : " + sampleVO.getSsoErrorCode());
@@ -425,7 +363,6 @@ public class LoginActivity extends Activity {
 								entLoginBtn.setVisibility(View.INVISIBLE);
 								stdLoginBtn.setVisibility(View.INVISIBLE);
 								expLoginBtn.setVisibility(View.INVISIBLE);
-								logoutBtn.setVisibility(View.VISIBLE);
 							}
 						} else {
 							resultText.setText("SSO 에러 코드 : " + sampleVO.getSsoErrorCode());
@@ -436,24 +373,7 @@ public class LoginActivity extends Activity {
 				}
 			});
 			
-			//mobileSSOB 호출 버튼 클릭 이벤트
-			mobileSSOBAppBtn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent otherIntent = getPackageManager().getLaunchIntentForPackage("com.softforum.mssosample2");
-					
-					otherIntent.putExtra("ssoToken", mobileSsoAPI.getToken());
-					startActivity(otherIntent);
-				}
-			});
-			
-			listViewBtn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent listViewIntent = new Intent(getApplicationContext(), ListViewActivity.class);
-					startActivity(listViewIntent);
-				}
-			});
+
 		}
 	}
 	

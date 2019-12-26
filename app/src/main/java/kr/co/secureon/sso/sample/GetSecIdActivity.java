@@ -1,15 +1,16 @@
 package kr.co.secureon.sso.sample;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.sf.msso.SsoUtil;
 
-public class GetSecIdActivity extends Activity {
-	private final String AUTH_ID_SAMPLE_PAGE = "http://192.168.70.155:7080/m/android/msso_auth_id_sample.jsp";
+public class GetSecIdActivity extends AppCompatActivity {
+	private final String AUTH_ID_SAMPLE_PAGE = "http://192.168.1.236:8080/android/msso_auth_id_sample.jsp";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class GetSecIdActivity extends Activity {
 			Log.d("smoh", getClass().getSimpleName() + ".secId : " + new String(secId));
 			secIdStr = new String(secId);
 		}
-		
+
 		Intent gIntent = null;
 		
 		if(!"".equals(secIdStr)) {

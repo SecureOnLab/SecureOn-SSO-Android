@@ -23,11 +23,13 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-public class ApiTestActivity extends Activity {
+public class ApiTestActivity extends AppCompatActivity {
 	SampleVO sampleVO = new SampleVO();
 	LinearLayout apiTestLayout;
 //	Button putValueBtn, getValueBtn, getAllValuesBtn, userPasswordInitBtn, userModifyPwdBtn, loginActivityBtn;
@@ -45,10 +47,6 @@ public class ApiTestActivity extends Activity {
 		if(Build.VERSION.SDK_INT > 8) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 		}
-		
-		//타이틀바 보이지 않도록 하기 setContentView 이전에 써야한다.
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(Window.FEATURE_NO_TITLE, Window.FEATURE_NO_TITLE);
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_api_test);
