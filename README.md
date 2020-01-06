@@ -19,7 +19,7 @@
 
 ## 시스템 권한
 
-```
+```manifest
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />  
 <uses-permission android:name="android.permission.INTERNET" />  
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
@@ -32,7 +32,7 @@
 
 ### 모바일 SSO API 생성
 
-```
+```java
 MobileSsoAPI mobileSsoAPI;
 ...
 mobileSsoAPI = new MobileSsoAPI(Context, 'exp_mobilesso.jsp 주소');
@@ -42,7 +42,7 @@ mobileSsoAPI = new MobileSsoAPI(Context, 'exp_mobilesso.jsp 주소');
 
 암복호화 서비스, 사용자 인증 수행(세션을 유지함), LDAP을 이용한 사용자 신원 확인, 사용자 정보 관리, 권한관리 정보 관리, 사용자 정의 데이터 관리, 계정 정보 관리 등
 
-```
+```java
 String token = mobileSsoAPI.andrsso_authID(아이디, 비밀번호, "true", 아이피, 시큐리티ID);
 ```
 
@@ -50,7 +50,7 @@ String token = mobileSsoAPI.andrsso_authID(아이디, 비밀번호, "true", 아�
 
 암복호화 서비스, 사용자 인증 수행(세션을 유지함)  
 
-```
+```java
 String token = mobileSsoAPI.andrsso_regUserSession(아이디, 아이피, "true", 시큐리티ID);
 ```
 
@@ -58,13 +58,13 @@ String token = mobileSsoAPI.andrsso_regUserSession(아이디, 아이피, "true",
 
 암복호화 서비스, 사용자 인증 수행(세션을 유지하지 않음) 
 
-```
+```java
 String token = mobileSsoAPI.andrsso_makeSimpleToken("3", 아이디, 아이피, 시큐리티ID);
 ```
 
 ### 로그아웃
 
-```
+```java
 mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), 아이피);  
 if (mobileSsoAPI.deleteToken() == 0) {  
     finish();  
