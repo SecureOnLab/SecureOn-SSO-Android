@@ -3,16 +3,16 @@
     android:id="@+id/apiTestLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <RadioGroup
             android:id="@+id/radioGroup1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <RadioButton
                 android:id="@+id/putValueRadioBtn"
@@ -32,19 +32,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="getAllValues()" />
-            
+
             <RadioButton
                 android:id="@+id/userPwdInitRadioBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="userPwdInit()" />
-            
+
             <RadioButton
                 android:id="@+id/userModifyPwdRadioBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="userModifyPwd()" />
-            
+
             <RadioButton
                 android:id="@+id/userSearchRadioBtn"
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/firstText"
@@ -75,7 +75,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/secondText"
@@ -92,56 +92,56 @@
             android:imeOptions="actionDone" />
     </LinearLayout>
 
-<!--     <LinearLayout -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" > -->
+    <!--     <LinearLayout -->
+    <!--         android:layout_width="match_parent" -->
+    <!--         android:layout_height="wrap_content" > -->
 
-<!--         <Button -->
-<!--             android:id="@+id/putValueBtn" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="putValue()" /> -->
+    <!--         <Button -->
+    <!--             android:id="@+id/putValueBtn" -->
+    <!--             android:layout_width="wrap_content" -->
+    <!--             android:layout_height="wrap_content" -->
+    <!--             android:text="putValue()" /> -->
 
-<!--         <Button -->
-<!--             android:id="@+id/getValueBtn" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="getValue()" /> -->
+    <!--         <Button -->
+    <!--             android:id="@+id/getValueBtn" -->
+    <!--             android:layout_width="wrap_content" -->
+    <!--             android:layout_height="wrap_content" -->
+    <!--             android:text="getValue()" /> -->
 
-<!--         <Button -->
-<!--             android:id="@+id/getAllValuesBtn" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="getAllValues()" /> -->
-<!--     </LinearLayout> -->
+    <!--         <Button -->
+    <!--             android:id="@+id/getAllValuesBtn" -->
+    <!--             android:layout_width="wrap_content" -->
+    <!--             android:layout_height="wrap_content" -->
+    <!--             android:text="getAllValues()" /> -->
+    <!--     </LinearLayout> -->
 
-<!--     <LinearLayout -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" > -->
+    <!--     <LinearLayout -->
+    <!--         android:layout_width="match_parent" -->
+    <!--         android:layout_height="wrap_content" > -->
 
-<!--         <Button -->
-<!--             android:id="@+id/userPasswordInitBtn" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="userPasswordInit()" /> -->
+    <!--         <Button -->
+    <!--             android:id="@+id/userPasswordInitBtn" -->
+    <!--             android:layout_width="wrap_content" -->
+    <!--             android:layout_height="wrap_content" -->
+    <!--             android:text="userPasswordInit()" /> -->
 
-<!--         <Button -->
-<!--             android:id="@+id/userModifyPwdBtn" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="userModifyPwd()" /> -->
-<!--     </LinearLayout> -->
+    <!--         <Button -->
+    <!--             android:id="@+id/userModifyPwdBtn" -->
+    <!--             android:layout_width="wrap_content" -->
+    <!--             android:layout_height="wrap_content" -->
+    <!--             android:text="userModifyPwd()" /> -->
+    <!--     </LinearLayout> -->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/actionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="실행" />
-        
+
         <Button
             android:id="@+id/loginActivityBtn"
             android:layout_width="wrap_content"

@@ -15,14 +15,20 @@ import com.sf.msso.SsoUtil;
 
 import java.io.IOException;
 
+import static kr.co.secureon.sso.sample.LoginActivity.PAGE_URL;
+
 public class MainActivity extends AppCompatActivity {
 
-    SampleVO sampleVO;
-    String secIdFlag;	//secId 사용유무
-    byte[] secId;
-    MobileSsoAPI mobileSsoAPI;
-    Button logoutBtn, webViewActivityBtn, listViewBtn, mobileSSOBAppBtn;
+    Button logoutBtn;
+    Button webViewActivityBtn;
+    Button listViewBtn;
+    Button mobileSSOBAppBtn;
+
     Context context;
+    MobileSsoAPI mobileSsoAPI;
+    String securityIdFlag;    //secId 사용유무
+    byte[] securityId;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +36,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
-        secIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
-        if("TRUE".equalsIgnoreCase(secIdFlag)) {
-            secId = SsoUtil.getSecId(context);
-            if(secId != null) {
-                Log.d("smoh", getClass().getSimpleName() + ".secId : " + new String(secId));
-                sampleVO.setSecId(secId);
-            }
+        securityIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
+        if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
+            securityId = SsoUtil.getSecId(context);
         }
 
-        sampleVO = new SampleVO();
-        mobileSsoAPI = new MobileSsoAPI(this, sampleVO.getPageURL());
+        mobileSsoAPI = new MobileSsoAPI(this, PAGE_URL);
 
         listViewBtn = findViewById(R.id.listViewBtn);
         webViewActivityBtn = findViewById(R.id.webViewActivityBtn);
@@ -74,23 +75,7 @@ public class MainActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mobileSsoAPI.getToken() == null || "".equals(mobileSsoAPI.getToken())) {
-                    Toast.makeText(context, "SSO 토큰이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), sampleVO.getClientIp());
-
-                        if(mobileSsoAPI.deleteToken() == 0) {
-                            finish();
-                        } else {
-                            Log.d("smoh", getClass().getSimpleName() + ".deleteToken : " + mobileSsoAPI.deleteToken());
-                        }
-                    } catch (IllegalStateException e) {
-                        Log.d("smoh", e.getMessage());
-                    } catch (IOException e) {
-                        Log.d("smoh", e.getMessage());
-                    }
-                }
+                logout();
             }
         });
 
@@ -102,15 +87,37 @@ public class MainActivity extends AppCompatActivity {
 
                 //ssoToken 평문을 암호화하여 보낸다.
                 String encSsoToken = mobileSsoAPI.enc(mobileSsoAPI.getToken());
-                Log.d("smoh", getClass().getSimpleName() + ".encSsoToken : " + encSsoToken);
                 intent.putExtra("ssoToken", encSsoToken);
                 //20141128 modify smoh - for secIdFlag 추가
-                if("TRUE".equalsIgnoreCase(secIdFlag)) {
-                    Log.d("smoh", getClass().getSimpleName() + ".secId : " + new String(sampleVO.getSecId()));
-                    intent.putExtra("secId", sampleVO.getSecId());
+                if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
+                    intent.putExtra("secId", securityId);
                 }
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logout();
+    }
+
+    // 로그아웃
+    private void logout() {
+
+        if (mobileSsoAPI.getToken() == null || "".equals(mobileSsoAPI.getToken())) {
+            Toast.makeText(context, "SSO 토큰이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), "127.0.0.1");
+                if (mobileSsoAPI.deleteToken() == 0) {
+                    finish();
+                }
+            } catch (IOException e) {
+                Log.d("smoh", e.getMessage());
+            }
+        }
+
     }
 }

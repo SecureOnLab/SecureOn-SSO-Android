@@ -8,26 +8,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
-<!-- android:imeOptions="normal"     // 특별한 의미 없음 -->
-<!-- android:imeOptions="actionUnspecified"     // 특별한 의미 없음 -->
-<!-- android:imeOptions="actionNone"     // 특별한 의미 없음 -->
-<!-- android:imeOptions="actionGo"     // '이동'의 의미 (예 : 웹 브라우져에서 사용) -->
-<!-- android:imeOptions="actionSearch"     // '검색'의 의미 (예 : 네이버 검색창) -->
-<!-- android:imeOptions="actionSend"     // '보내기'의 의미 (예 : 메세지 작성시 사용) -->
-<!-- android:imeOptions="actionNext"     // '다음'의 의미 (예 : 회원가입시 다음 필드로 이동시) -->
-<!-- android:imeOptions="actionDone"     // '완료'의 의미 (예 : 정보 입력창) -->
-<!-- android:imeOptions="actionPrevious"     // '이전'의 의미 (예 : 회원가입시 이전 필드로 이동시) - API11부터 가능 -->
+        <!-- android:imeOptions="normal"     // 특별한 의미 없음 -->
+        <!-- android:imeOptions="actionUnspecified"     // 특별한 의미 없음 -->
+        <!-- android:imeOptions="actionNone"     // 특별한 의미 없음 -->
+        <!-- android:imeOptions="actionGo"     // '이동'의 의미 (예 : 웹 브라우져에서 사용) -->
+        <!-- android:imeOptions="actionSearch"     // '검색'의 의미 (예 : 네이버 검색창) -->
+        <!-- android:imeOptions="actionSend"     // '보내기'의 의미 (예 : 메세지 작성시 사용) -->
+        <!-- android:imeOptions="actionNext"     // '다음'의 의미 (예 : 회원가입시 다음 필드로 이동시) -->
+        <!-- android:imeOptions="actionDone"     // '완료'의 의미 (예 : 정보 입력창) -->
+        <!-- android:imeOptions="actionPrevious"     // '이전'의 의미 (예 : 회원가입시 이전 필드로 이동시) - API11부터 가능 -->
         <EditText
             android:id="@+id/url_etext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.79"
             android:ems="10"
-            android:text="http://192.168.1.236:8080/android/msso_web_sample.jsp"
             android:singleLine="true"
-            >
+            android:text="http://192.168.1.236:8080/android/msso_web_sample.jsp">
 
             <requestFocus />
         </EditText>
@@ -42,7 +41,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/refresh_btn"
@@ -71,13 +70,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="stop" />
-
-        <Button
-            android:id="@+id/login_activity_btn"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="로그인" />
 
     </LinearLayout>
 

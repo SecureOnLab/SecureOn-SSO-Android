@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SafeIdentity</string>
     <string name="login_activity">Login Activity</string>
+    <string name="main_activity">SafeIdentity Sample</string>
     <string name="webview_activity">웹 SSO</string>
     <string name="api_test_activity">API 테스트</string>
     <string name="sso_api_test_activity">API 테스트</string>
