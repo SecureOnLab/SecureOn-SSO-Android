@@ -6,11 +6,11 @@
 
 ## 시작하기 전
 
-- 모바일의 콘텐츠를 서비스하는 서버에 SafeAgent를 한컴 시큐어 담당 엔지니어에 설치를 요청
+1. 모바일의 콘텐츠를 서비스하는 서버에 SafeAgent를 한컴 시큐어 담당 엔지니어에 설치를 요청
 
-- WAS 라이브러리 디렉토리에 ServerAPI 라이브러리(jar) 추가
+2. WAS 라이브러리 디렉토리에 ServerAPI 라이브러리(jar) 추가
 
-- exp_mobilesso.jsp 파일을 WAS 서버의 Web 서비스 경로에 파일 업로드
+3. exp_mobilesso.jsp 파일을 WAS 서버의 Web 서비스 경로에 파일 업로드
 
 ## 빌드 환경
 
@@ -65,7 +65,7 @@ String token = mobileSsoAPI.andrsso_makeSimpleToken("3", 아이디, 아이피, �
 ### 로그아웃
 
 ```
-mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), sampleVO.getClientIp());  
+mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), 아이피);  
 if (mobileSsoAPI.deleteToken() == 0) {  
     finish();  
 }
