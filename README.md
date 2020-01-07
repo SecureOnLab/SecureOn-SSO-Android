@@ -46,7 +46,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ### Security ID 생성
 
-모바일에서는 로컬 아이피가 
+스마트폰의 유니크 아이디를 생성할 수 있다.
 
 ```java
 String securityId = SsoUtil.getSecId(this);
@@ -56,30 +56,40 @@ String securityId = SsoUtil.getSecId(this);
 
 암복호화 서비스, 사용자 인증 수행(세션을 유지함), LDAP을 이용한 사용자 신원 확인, 사용자 정보 관리, 권한관리 정보 관리, 사용자 정의 데이터 관리, 계정 정보 관리 등
 
+Client IP는 127.0.0.1 고정으로 하고 덮어쓰기 유무는 "true"로 한다.
+
 ```java
-String token = mobileSsoAPI.andrsso_authID(아이디, 비밀번호, 덮어쓰기유무, 아이피, 시큐리티ID);
+String token = mobileSsoAPI.andrsso_authID(로그인아이디, 비밀번호, "true", "127.0.0.1", securityId);
 ```
 
 ### 스탠다드 로그인
 
-암복호화 서비스, 사용자 인증 수행(세션을 유지함)  
+암복호화 서비스, 사용자 인증 수행(세션을 유지함) 
+
+Client IP는 127.0.0.1 고정으로 하고 덮어쓰기 유무는 "true"로 한다.
 
 ```java
-String token = mobileSsoAPI.andrsso_regUserSession(아이디, 아이피, 덮어쓰기유무, 시큐리티ID);
+String token = mobileSsoAPI.andrsso_regUserSession(로그인아이디, "127.0.0.1", "true", securityId);
 ```
 
 ### 익스프레스 로그인
 
 암복호화 서비스, 사용자 인증 수행(세션을 유지하지 않음) 
 
+Client IP는 127.0.0.1 고정으로 한다.
+
+덮어쓰기 유무는 "true"로 한다.
+
 ```java
-String token = mobileSsoAPI.andrsso_makeSimpleToken("3", 아이디, 아이피, 시큐리티ID);
+String token = mobileSsoAPI.andrsso_makeSimpleToken("3", 로그인아이디, "127.0.0.1", securityId);
 ```
 
 ### 로그아웃
 
+Client IP는 127.0.0.1 고정으로 한다.
+
 ```java
-mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), 아이피);  
+mobileSsoAPI.andrsso_unregUserSession(mobileSsoAPI.getToken(), "127.0.0.1");  
 if (mobileSsoAPI.deleteToken() == 0) {  
     finish();  
 }
