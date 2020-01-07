@@ -35,7 +35,13 @@
 ```java
 MobileSsoAPI mobileSsoAPI;
 ...
-mobileSsoAPI = new MobileSsoAPI(Context, 'exp_mobilesso.jsp 주소');
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    ...
+    mobileSsoAPI = new MobileSsoAPI(Context, 'exp_mobilesso.jsp 주소');
+    ...
+}
 ```
 
 ### 엔터프라이즈 로그인
@@ -70,55 +76,3 @@ if (mobileSsoAPI.deleteToken() == 0) {
     finish();  
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
