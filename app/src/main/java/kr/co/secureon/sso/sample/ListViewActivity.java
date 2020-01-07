@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
+import static kr.co.secureon.sso.sample.LoginActivity.PAGE_URL;
+
 public class ListViewActivity extends AppCompatActivity {
 
     ListView listView;
@@ -44,15 +46,10 @@ public class ListViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view);
 
-        secIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
+        secId = SsoUtil.getSecId(this);
+        mobileSsoAPI = new MobileSsoAPI(this, PAGE_URL);
 
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            secId = SsoUtil.getSecId(getApplicationContext());
-        }
-
-        mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), getString(R.string.exp_page_url));
-
-        arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         listView = findViewById(R.id.listViewLayout);
 
         listView.setAdapter(arrayAdapter);

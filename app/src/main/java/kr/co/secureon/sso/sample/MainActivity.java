@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     Context context;
     MobileSsoAPI mobileSsoAPI;
-    String securityIdFlag;    //secId 사용유무
     byte[] securityId;
     String token;
 
@@ -36,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
-        securityIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
-        if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-            securityId = SsoUtil.getSecId(context);
-        }
+        securityId = SsoUtil.getSecId(this);
 
         mobileSsoAPI = new MobileSsoAPI(this, PAGE_URL);
 
@@ -88,10 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 //ssoToken 평문을 암호화하여 보낸다.
                 String encSsoToken = mobileSsoAPI.enc(mobileSsoAPI.getToken());
                 intent.putExtra("ssoToken", encSsoToken);
-                //20141128 modify smoh - for secIdFlag 추가
-                if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-                    intent.putExtra("secId", securityId);
-                }
+                intent.putExtra("secId", securityId);
                 startActivity(intent);
             }
         });

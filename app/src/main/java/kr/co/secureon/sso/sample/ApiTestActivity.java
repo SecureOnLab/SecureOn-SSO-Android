@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -26,18 +25,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
+import static kr.co.secureon.sso.sample.LoginActivity.CLIENT_IP;
+import static kr.co.secureon.sso.sample.LoginActivity.PAGE_URL;
+
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class ApiTestActivity extends AppCompatActivity {
-    SampleVO sampleVO = new SampleVO();
     LinearLayout apiTestLayout;
-    //	Button putValueBtn, getValueBtn, getAllValuesBtn, userPasswordInitBtn, userModifyPwdBtn, loginActivityBtn;
     RadioGroup radioGroup;
     RadioButton putValueRadioBtn, getValueRadioBtn, getAllValuesRadioBtn;
     RadioButton userPwdInitRadioBtn, userModifyPwdRadioBtn, userSearchRadioBtn;
     Button actionBtn, loginActivityBtn;
     TextView firstText, secondText, resultText;
     EditText firstEditText, secondEditText;
-    String secIdFlag;    //secId 사용유무
     byte[] secId = null;
     MobileSsoAPI mobileSsoAPI;
 
@@ -48,41 +47,35 @@ public class ApiTestActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_api_test);
+        secId = SsoUtil.getSecId(this);
 
-        secIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
-
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            secId = SsoUtil.getSecId(getApplicationContext());
-        }
-
-        mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), getString(R.string.exp_page_url));
-        Log.d("smoh", "gettoken : " + mobileSsoAPI.getToken());
+        mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), PAGE_URL);
         if (mobileSsoAPI.getToken() == null || "".equals(mobileSsoAPI.getToken())) {
             Toast.makeText(getApplicationContext(), "로그인 하여야 사용 가능합니다.", Toast.LENGTH_LONG).show();
             Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(loginIntent);
         }
 
-        apiTestLayout = (LinearLayout) findViewById(R.id.apiTestLayout);
+        apiTestLayout = findViewById(R.id.apiTestLayout);
 
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-        putValueRadioBtn = (RadioButton) findViewById(R.id.putValueRadioBtn);
-        getValueRadioBtn = (RadioButton) findViewById(R.id.getValueRadioBtn);
-        getAllValuesRadioBtn = (RadioButton) findViewById(R.id.getAllValuesRadioBtn);
-        userPwdInitRadioBtn = (RadioButton) findViewById(R.id.userPwdInitRadioBtn);
-        userModifyPwdRadioBtn = (RadioButton) findViewById(R.id.userModifyPwdRadioBtn);
-        userSearchRadioBtn = (RadioButton) findViewById(R.id.userSearchRadioBtn);
+        radioGroup = findViewById(R.id.radioGroup1);
+        putValueRadioBtn = findViewById(R.id.putValueRadioBtn);
+        getValueRadioBtn = findViewById(R.id.getValueRadioBtn);
+        getAllValuesRadioBtn = findViewById(R.id.getAllValuesRadioBtn);
+        userPwdInitRadioBtn = findViewById(R.id.userPwdInitRadioBtn);
+        userModifyPwdRadioBtn = findViewById(R.id.userModifyPwdRadioBtn);
+        userSearchRadioBtn = findViewById(R.id.userSearchRadioBtn);
 
-        actionBtn = (Button) findViewById(R.id.actionBtn);
-        loginActivityBtn = (Button) findViewById(R.id.loginActivityBtn);
+        actionBtn = findViewById(R.id.actionBtn);
+        loginActivityBtn= findViewById(R.id.loginActivityBtn);
 
-        firstText = (TextView) findViewById(R.id.firstText);
-        secondText = (TextView) findViewById(R.id.secondText);
+        firstText = findViewById(R.id.firstText);
+        secondText = findViewById(R.id.secondText);
 
-        firstEditText = (EditText) findViewById(R.id.firstEditText);
-        secondEditText = (EditText) findViewById(R.id.secondEditText);
+        firstEditText = findViewById(R.id.firstEditText);
+        secondEditText = findViewById(R.id.secondEditText);
 
-        resultText = (TextView) findViewById(R.id.resultText);
+        resultText = findViewById(R.id.resultText);
         resultText.setEnabled(false);    //textview 수정 안되도록 수정
 
         apiTestLayout.setOnClickListener(new OnClickListener() {
@@ -162,10 +155,7 @@ public class ApiTestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 loginIntent.putExtra("ssoToken", mobileSsoAPI.getToken());
-                //20141128 modify smoh - for secIdFlag
-                if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-                    loginIntent.putExtra("secId", secId);
-                }
+                loginIntent.putExtra("secId", secId);
                 startActivity(loginIntent);
             }
 
@@ -182,15 +172,13 @@ public class ApiTestActivity extends AppCompatActivity {
         checkEditText(tagValue, secondEditText, "태그값");
 
         String ret = mobileSsoAPI.andrsso_putValue(tagName, tagValue);
-        Log.d("smoh", "putValue result : " + ret);
 
         resultText.setText("SSO PutValue 결과 : " + ret);
     }
 
     private void getValueAction() {
-        String tagName, index;
-        tagName = SsoUtil.checkNull(firstEditText.getText().toString());
-        index = SsoUtil.checkNull(secondEditText.getText().toString());
+        String tagName = SsoUtil.checkNull(firstEditText.getText().toString());
+        String index = SsoUtil.checkNull(secondEditText.getText().toString());
 
         checkEditText(tagName, firstEditText, "태그명");
 
@@ -205,28 +193,13 @@ public class ApiTestActivity extends AppCompatActivity {
             }
         }
 
-        String ret = "";
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            ret = mobileSsoAPI.andrsso_getValue(tagName, Integer.parseInt(index), mobileSsoAPI.getToken(), sampleVO.getClientIp(), secId);
-        } else {
-            ret = mobileSsoAPI.andrsso_getValue(tagName, Integer.parseInt(index), mobileSsoAPI.getToken(), sampleVO.getClientIp(), null);
-        }
-        Log.d("smoh", "getValue result : " + ret);
+        String ret = mobileSsoAPI.andrsso_getValue(tagName, Integer.parseInt(index), mobileSsoAPI.getToken(), CLIENT_IP, secId);
 
         resultText.setText("SSO GetValue 결과 : " + ret);
     }
 
     private void getAllValuesAction() {
-        String ret = "";
-
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            ret = mobileSsoAPI.andrsso_getAllValues(mobileSsoAPI.getToken(), sampleVO.getClientIp(), secId);
-        } else {
-            ret = mobileSsoAPI.andrsso_getAllValues(mobileSsoAPI.getToken(), sampleVO.getClientIp(), secId);
-        }
-
-        Log.d("smoh", "getAllValues : " + ret);
-
+        String ret = mobileSsoAPI.andrsso_getAllValues(mobileSsoAPI.getToken(), CLIENT_IP, secId);
         resultText.setText("SSO GetAllValues 결과 : " + ret);
     }
 
@@ -239,8 +212,7 @@ public class ApiTestActivity extends AppCompatActivity {
         checkEditText(userId, firstEditText, "사용자 ID");
         checkEditText(userPwd, secondEditText, "사용자 패스워드");
 
-        ret = mobileSsoAPI.andrsso_userPwdInit(userId, userPwd, 0, sampleVO.getClientIp());
-        Log.d("smoh", "userPasswordInit ret : " + ret);
+        ret = mobileSsoAPI.andrsso_userPwdInit(userId, userPwd, 0, CLIENT_IP);
         resultText.setText("SSO UserPasswordInit 결과 : " + ret);
     }
 
@@ -253,8 +225,7 @@ public class ApiTestActivity extends AppCompatActivity {
         checkEditText(currentPwd, firstEditText, "현재 패스워드");
         checkEditText(newPwd, secondEditText, "새로운 패스워드");
 
-        ret = mobileSsoAPI.andrsso_userModifyPwd(mobileSsoAPI.getToken(), currentPwd, newPwd, sampleVO.getClientIp());
-        Log.d("smoh", "userModifyPwd ret : " + ret);
+        ret = mobileSsoAPI.andrsso_userModifyPwd(mobileSsoAPI.getToken(), currentPwd, newPwd, CLIENT_IP);
         resultText.setText("SSO UserModfiyPwd 결과 : " + ret);
     }
 
@@ -265,7 +236,6 @@ public class ApiTestActivity extends AppCompatActivity {
         checkEditText(userId, firstEditText, "사용자 ID");
 
         ret = mobileSsoAPI.andrsso_userSearch(userId);
-        Log.d("smoh", "userSearch ret : " + ret);
         resultText.setText("SSO userSearch 결과 : " + ret);
     }
 

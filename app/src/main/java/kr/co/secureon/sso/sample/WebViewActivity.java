@@ -25,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
+import static kr.co.secureon.sso.sample.LoginActivity.PAGE_URL;
+
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class WebViewActivity extends AppCompatActivity {
     WebView webView;
@@ -32,7 +34,6 @@ public class WebViewActivity extends AppCompatActivity {
     Button goBtn, refreshBtn, backBtn, homeBtn, stopBtn;
     String homePageUrl;
     String encToken, ssoToken;
-    String secIdFlag;
     byte[] secId = null;
     //키보드 ime 모드 처리
     OnEditorActionListener urlEditTextListener = new OnEditorActionListener() {
@@ -90,48 +91,33 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
-        //20141128 add smoh - securityID 사용 유무
-        secIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
-
         //토큰 값 확인
         encToken = getIntent().getExtras().getString("ssoToken");
-
-        //20141128 modify smoh - for secIdFlag 체크
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            secId = getIntent().getExtras().getByteArray("secId");
-            Log.d("smoh", getClass().getSimpleName() + ".secId : " + new String(secId));
-        }
+        secId = getIntent().getExtras().getByteArray("secId");
 
         if (encToken == null || "".equals(encToken)) {
-            Log.d("smoh", getClass().getSimpleName() + ".ssoToken is null.");
             Toast.makeText(this, "SSO 토큰이 존재하지 않습니다.", Toast.LENGTH_LONG).show();
 
             Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(loginIntent);
         }
 
-        Log.d("smoh", getClass().getSimpleName() + ".encToken : " + encToken);
-        MobileSsoAPI mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), getString(R.string.exp_page_url));
+        MobileSsoAPI mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), PAGE_URL);
         ssoToken = mobileSsoAPI.dec(encToken);
-        Log.d("smoh", getClass().getSimpleName() + ".ssoToken : " + ssoToken);
 
-        urlEditText = (EditText) findViewById(R.id.url_etext);
-        goBtn = (Button) findViewById(R.id.go_btn);
-        refreshBtn = (Button) findViewById(R.id.refresh_btn);
-        backBtn = (Button) findViewById(R.id.back_btn);
-        homeBtn = (Button) findViewById(R.id.home_btn);
-        stopBtn = (Button) findViewById(R.id.stop_btn);
-        webView = (WebView) findViewById(R.id.ssoWebView);
+        urlEditText = findViewById(R.id.url_etext);
+        goBtn = findViewById(R.id.go_btn);
+        refreshBtn = findViewById(R.id.refresh_btn);
+        backBtn = findViewById(R.id.back_btn);
+        homeBtn = findViewById(R.id.home_btn);
+        stopBtn = findViewById(R.id.stop_btn);
+        webView = findViewById(R.id.ssoWebView);
 
         SsoUtil.ssoWebViewInit(webView);
 
         homePageUrl = urlEditText.getText().toString();
         homePageUrl += "?ssoToken=" + ssoToken;
-
-        //20141128 modify smoh - for secIdFlag 체크
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            homePageUrl += "&secId=" + new String(secId);
-        }
+        homePageUrl += "&secId=" + new String(secId);
 
         urlEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 

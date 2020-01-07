@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -23,18 +22,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
+import static kr.co.secureon.sso.sample.LoginActivity.CLIENT_IP;
+import static kr.co.secureon.sso.sample.LoginActivity.PAGE_URL;
+
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class SsoApiTestActivity extends AppCompatActivity {
-    SampleVO sampleVO = new SampleVO();
     LinearLayout ssoApiTestLayout, firstLayout, secondLayout, thirdLayout, fourthLayout;
     TextView firstText, secondText, resultText;
     EditText modeEditText, firstEditText, secondEditText;
     Button actionBtn;
     RadioButton oneRadioBtn, subRadioBtn;
     RadioButton trueRadioBtn, falseRadioBtn;
-    String secIdFlag;    //secId 사용유무
-    byte[] secId = null;
+
     MobileSsoAPI mobileSsoAPI;
+    byte[] secId = null;
     String mode;
 
     @Override
@@ -46,44 +47,38 @@ public class SsoApiTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actvity_sso_api_test);
 
-        secIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
+        secId = SsoUtil.getSecId(getApplicationContext());
 
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            secId = SsoUtil.getSecId(getApplicationContext());
-        }
-
-        mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), getString(R.string.exp_page_url));
-        Log.d("smoh", "gettoken : " + mobileSsoAPI.getToken());
+        mobileSsoAPI = new MobileSsoAPI(getApplicationContext(), PAGE_URL);
         if (mobileSsoAPI.getToken() == null || "".equals(mobileSsoAPI.getToken())) {
             Toast.makeText(getApplicationContext(), "로그인 하여야 사용 가능합니다.", Toast.LENGTH_LONG).show();
             loginActivity();
         }
 
-        ssoApiTestLayout = (LinearLayout) findViewById(R.id.ssoApiTestLayout);
-        firstLayout = (LinearLayout) findViewById(R.id.firstLayout);
-        secondLayout = (LinearLayout) findViewById(R.id.secondLayout);
-        thirdLayout = (LinearLayout) findViewById(R.id.thirdLayout);
-        fourthLayout = (LinearLayout) findViewById(R.id.fourthLayout);
+        ssoApiTestLayout = findViewById(R.id.ssoApiTestLayout);
+        firstLayout = findViewById(R.id.firstLayout);
+        secondLayout = findViewById(R.id.secondLayout);
+        thirdLayout = findViewById(R.id.thirdLayout);
+        fourthLayout = findViewById(R.id.fourthLayout);
 
-        firstText = (TextView) findViewById(R.id.firstText);
-        secondText = (TextView) findViewById(R.id.secondText);
-        resultText = (TextView) findViewById(R.id.resultText);
+        firstText = findViewById(R.id.firstText);
+        secondText = findViewById(R.id.secondText);
+        resultText = findViewById(R.id.resultText);
 
-        modeEditText = (EditText) findViewById(R.id.modeEditText);
-        firstEditText = (EditText) findViewById(R.id.firstEditText);
-        secondEditText = (EditText) findViewById(R.id.secondEditText);
+        modeEditText = findViewById(R.id.modeEditText);
+        firstEditText = findViewById(R.id.firstEditText);
+        secondEditText = findViewById(R.id.secondEditText);
 
-        actionBtn = (Button) findViewById(R.id.actionBtn);
+        actionBtn = findViewById(R.id.actionBtn);
 
-        oneRadioBtn = (RadioButton) findViewById(R.id.oneRadioBtn);
-        subRadioBtn = (RadioButton) findViewById(R.id.subRadioBtn);
+        oneRadioBtn = findViewById(R.id.oneRadioBtn);
+        subRadioBtn = findViewById(R.id.subRadioBtn);
 
-        trueRadioBtn = (RadioButton) findViewById(R.id.trueRadioBtn);
-        falseRadioBtn = (RadioButton) findViewById(R.id.falseRadioBtn);
+        trueRadioBtn = findViewById(R.id.trueRadioBtn);
+        falseRadioBtn = findViewById(R.id.falseRadioBtn);
 
         if (getIntent() != null) {
             if (getIntent().getStringExtra("mode") != null) {
-                Log.d("smoh", getClass().getSimpleName() + ".mode : " + getIntent().getStringExtra("mode"));
                 mode = getIntent().getStringExtra("mode");
 
                 setTitle(mode + " API 테스트");
@@ -194,7 +189,6 @@ public class SsoApiTestActivity extends AppCompatActivity {
             return;
 
         String ret = mobileSsoAPI.andrsso_putValue(tagName, tagValue);
-        Log.d("smoh", "putValue result : " + ret);
 
         resultText.setText("SSO PutValue 결과 : " + ret);
     }
@@ -218,28 +212,14 @@ public class SsoApiTestActivity extends AppCompatActivity {
             }
         }
 
-        String ret = "";
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            ret = mobileSsoAPI.andrsso_getValue(tagName, Integer.parseInt(index), mobileSsoAPI.getToken(), sampleVO.getClientIp(), secId);
-        } else {
-            ret = mobileSsoAPI.andrsso_getValue(tagName, Integer.parseInt(index), mobileSsoAPI.getToken(), sampleVO.getClientIp(), null);
-        }
-        Log.d("smoh", "getValue result : " + ret);
+        String ret = mobileSsoAPI.andrsso_getValue(tagName, Integer.parseInt(index), mobileSsoAPI.getToken(), CLIENT_IP, secId);
 
         resultText.setText("SSO GetValue 결과 : " + ret);
     }
 
     private void getAllValuesAction() {
-        String ret = "";
 
-        if ("TRUE".equalsIgnoreCase(secIdFlag)) {
-            ret = mobileSsoAPI.andrsso_getAllValues(mobileSsoAPI.getToken(), sampleVO.getClientIp(), secId);
-        } else {
-            ret = mobileSsoAPI.andrsso_getAllValues(mobileSsoAPI.getToken(), sampleVO.getClientIp(), secId);
-        }
-
-        Log.d("smoh", "getAllValues : " + ret);
-
+        String ret = mobileSsoAPI.andrsso_getAllValues(mobileSsoAPI.getToken(),  CLIENT_IP, secId);
         resultText.setText("SSO GetAllValues 결과 : " + ret);
     }
 
@@ -254,8 +234,7 @@ public class SsoApiTestActivity extends AppCompatActivity {
         if (!checkEditText(userPwd, secondEditText, "사용자 패스워드"))
             return;
 
-        ret = mobileSsoAPI.andrsso_userPwdInit(userId, userPwd, 0, sampleVO.getClientIp());
-        Log.d("smoh", "userPasswordInit ret : " + ret);
+        ret = mobileSsoAPI.andrsso_userPwdInit(userId, userPwd, 0, CLIENT_IP);
         resultText.setText("SSO UserPasswordInit 결과 : " + ret);
     }
 
@@ -270,8 +249,7 @@ public class SsoApiTestActivity extends AppCompatActivity {
         if (!checkEditText(newPwd, secondEditText, "새로운 패스워드"))
             return;
 
-        ret = mobileSsoAPI.andrsso_userModifyPwd(mobileSsoAPI.getToken(), currentPwd, newPwd, sampleVO.getClientIp());
-        Log.d("smoh", "userModifyPwd ret : " + ret);
+        ret = mobileSsoAPI.andrsso_userModifyPwd(mobileSsoAPI.getToken(), currentPwd, newPwd, CLIENT_IP);
         resultText.setText("SSO UserModfiyPwd 결과 : " + ret);
     }
 
@@ -283,23 +261,18 @@ public class SsoApiTestActivity extends AppCompatActivity {
             return;
 
         ret = mobileSsoAPI.andrsso_userSearch(userId);
-        Log.d("smoh", "userSearch ret : " + ret);
         resultText.setText("SSO userSearch 결과 : " + ret);
     }
 
     private void userViewAction() {
-        String ret = "";
-
-        ret = mobileSsoAPI.andrsso_userView(mobileSsoAPI.getToken(), sampleVO.getClientIp());
-        Log.d("smoh", "userView ret : " + ret);
+        String ret = mobileSsoAPI.andrsso_userView(mobileSsoAPI.getToken(), CLIENT_IP);
         resultText.setText("SSO userView 결과 : " + ret);
     }
 
     private void getUserRoleListAction() {
         String ret = "";
 
-        ret = mobileSsoAPI.andrsso_getUserRoleList(mobileSsoAPI.getToken(), sampleVO.getClientIp());
-        Log.d("smoh", "getUserRoleList ret : " + ret);
+        ret = mobileSsoAPI.andrsso_getUserRoleList(mobileSsoAPI.getToken(), CLIENT_IP);
         resultText.setText("SSO getUserRoleList : " + ret);
     }
 
@@ -324,8 +297,7 @@ public class SsoApiTestActivity extends AppCompatActivity {
             return;
         }
 
-        ret = mobileSsoAPI.andrsso_getResourcePermission(srdn, mobileSsoAPI.getToken(), sampleVO.getClientIp(), roleSearch);
-        Log.d("smoh", "getResourcePermission ret : " + ret);
+        ret = mobileSsoAPI.andrsso_getResourcePermission(srdn, mobileSsoAPI.getToken(), CLIENT_IP, roleSearch);
         resultText.setText("SSO getResourcePermission 결과 : " + ret);
     }
 
@@ -363,8 +335,7 @@ public class SsoApiTestActivity extends AppCompatActivity {
             return;
         }
 
-        ret = mobileSsoAPI.andrsso_getResourceList(base, scope, mobileSsoAPI.getToken(), permission, sampleVO.getClientIp(), roleSearch);
-        Log.d("smoh", "getResourceList ret : " + ret);
+        ret = mobileSsoAPI.andrsso_getResourceList(base, scope, mobileSsoAPI.getToken(), permission, CLIENT_IP, roleSearch);
         resultText.setText("SSO getResourceList 결과 : " + ret);
     }
 

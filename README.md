@@ -39,9 +39,17 @@ MobileSsoAPI mobileSsoAPI;
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     ...
-    mobileSsoAPI = new MobileSsoAPI(Context, 'exp_mobilesso.jsp 주소');
+    mobileSsoAPI = new MobileSsoAPI(this, 'exp_mobilesso.jsp 주소');
     ...
 }
+```
+
+### Security ID 생성
+
+모바일에서는 로컬 아이피가 
+
+```java
+String securityId = SsoUtil.getSecId(this);
 ```
 
 ### 엔터프라이즈 로그인
@@ -49,7 +57,7 @@ protected void onCreate(Bundle savedInstanceState) {
 암복호화 서비스, 사용자 인증 수행(세션을 유지함), LDAP을 이용한 사용자 신원 확인, 사용자 정보 관리, 권한관리 정보 관리, 사용자 정의 데이터 관리, 계정 정보 관리 등
 
 ```java
-String token = mobileSsoAPI.andrsso_authID(아이디, 비밀번호, "true", 아이피, 시큐리티ID);
+String token = mobileSsoAPI.andrsso_authID(아이디, 비밀번호, 덮어쓰기유무, 아이피, 시큐리티ID);
 ```
 
 ### 스탠다드 로그인
@@ -57,7 +65,7 @@ String token = mobileSsoAPI.andrsso_authID(아이디, 비밀번호, "true", 아�
 암복호화 서비스, 사용자 인증 수행(세션을 유지함)  
 
 ```java
-String token = mobileSsoAPI.andrsso_regUserSession(아이디, 아이피, "true", 시큐리티ID);
+String token = mobileSsoAPI.andrsso_regUserSession(아이디, 아이피, 덮어쓰기유무, 시큐리티ID);
 ```
 
 ### 익스프레스 로그인
@@ -76,3 +84,5 @@ if (mobileSsoAPI.deleteToken() == 0) {
     finish();  
 }
 ```
+
+

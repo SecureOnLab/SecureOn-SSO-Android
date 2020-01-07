@@ -33,9 +33,9 @@ import java.util.Enumeration;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class LoginActivity extends Activity {
 
-    private final static String TAG = "smoh";
-
-    public static final String PAGE_URL = "http://192.168.1.236:8080/android/exp_mobilesso.jsp";
+    public static final String CLIENT_IP = "127.0.0.1";
+    public static final String PAGE_URL = "http://192.168.60.144:8080/android/exp_mobilesso.jsp";
+//    public static final String PAGE_URL = "http://192.168.2.2:8080/android/exp_mobilesso.jsp";
 
     ScrollView scrollView;
     EditText userIdEditText;
@@ -46,7 +46,6 @@ public class LoginActivity extends Activity {
     TextView resultText;
 
     MobileSsoAPI mobileSsoAPI;
-    String securityIdFlag;    //secId 사용유무
     byte[] securityId;
     String token;
 
@@ -60,12 +59,7 @@ public class LoginActivity extends Activity {
 
         setContentView(R.layout.activity_login);
 
-        //20141128 add smoh - securityID 사용 유무
-        securityIdFlag = this.getResources().getString(R.string.SEC_ID_FLAG);
-        if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-            securityId = SsoUtil.getSecId(this.getApplicationContext());
-        }
-
+        securityId = SsoUtil.getSecId(this);
         mobileSsoAPI = new MobileSsoAPI(this, PAGE_URL);
 
         scrollView = findViewById(R.id.scrollView);
@@ -115,13 +109,7 @@ public class LoginActivity extends Activity {
                             mobileSsoAPI.deleteToken();
                         } else {
 
-                            String user;
-                            //20141128 modify smoh - secIdFlag 추가
-                            if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-                                user = mobileSsoAPI.andrsso_verifyToken(token, getLocalIpAddress(), securityId);
-                            } else {
-                                user = mobileSsoAPI.andrsso_verifyToken(token, getLocalIpAddress(),null);
-                            }
+                            String user = mobileSsoAPI.andrsso_verifyToken(token, CLIENT_IP, securityId);
 
                             if (user == null) {
                                 mobileSsoAPI.deleteToken();
@@ -135,10 +123,6 @@ public class LoginActivity extends Activity {
                                     if (mobileSsoAPI.getToken() == null || "".equals(mobileSsoAPI.getToken())) {
                                         mobileSsoAPI.setToken(user, token);
                                     }
-
-                                    entLoginBtn.setVisibility(View.INVISIBLE);
-                                    stdLoginBtn.setVisibility(View.INVISIBLE);
-                                    expLoginBtn.setVisibility(View.INVISIBLE);
                                 } else {
                                     resultText.setText("SSO 에러 코드 : " + errorCode);
                                 }
@@ -200,13 +184,7 @@ public class LoginActivity extends Activity {
                             return;
                         }
 
-                        //20141128 modify smoh - for secIdFlag 추가
-                        String ip = getLocalIpAddress();
-                        if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-                            token = mobileSsoAPI.andrsso_authID(userId, userPwd, "true", ip, securityId);
-                        } else {
-                            token = mobileSsoAPI.andrsso_authID(userId, userPwd, "true", ip,null);
-                        }
+                        token = mobileSsoAPI.andrsso_authID(userId, userPwd,"true", CLIENT_IP, securityId);
 
                         if (mobileSsoAPI.getLastHttpErrorCode() == 200) {
                             int ssoErrorCode = mobileSsoAPI.getLastSSOErrorCode();
@@ -234,7 +212,6 @@ public class LoginActivity extends Activity {
                         e.printStackTrace();
                     } finally {
                         keyPadHide();
-//						editTextClean();
                     }
                 }
             });
@@ -252,11 +229,7 @@ public class LoginActivity extends Activity {
                             return;
                         }
 
-                        if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-                            token = mobileSsoAPI.andrsso_regUserSession(userId, getLocalIpAddress(), "true", securityId);
-                        } else {
-                            token = mobileSsoAPI.andrsso_regUserSession(userId, getLocalIpAddress(), "true", null);
-                        }
+                        token = mobileSsoAPI.andrsso_regUserSession(userId, CLIENT_IP,"true", securityId);
 
                         if (mobileSsoAPI.getLastHttpErrorCode() == 200) {
                             int ssoErrorCode = mobileSsoAPI.getLastSSOErrorCode();
@@ -297,11 +270,7 @@ public class LoginActivity extends Activity {
                         return;
                     }
 
-                    if ("TRUE".equalsIgnoreCase(securityIdFlag)) {
-                        token = mobileSsoAPI.andrsso_makeSimpleToken("3", userId, getLocalIpAddress(), securityId);
-                    } else {
-                        token = mobileSsoAPI.andrsso_makeSimpleToken("3", userId, getLocalIpAddress(), null);
-                    }
+                    token = mobileSsoAPI.andrsso_makeSimpleToken("3", userId, CLIENT_IP, securityId);
 
                     if (mobileSsoAPI.getLastHttpErrorCode() == 200) {
                         int ssoErrorCode = mobileSsoAPI.getLastSSOErrorCode();
@@ -338,25 +307,6 @@ public class LoginActivity extends Activity {
     private void editTextClean() {
         userIdEditText.setText("");
         userPwdEditText.setText("");
-    }
-
-    public String getLocalIpAddress() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()) {
-                        String ip = Formatter.formatIpAddress(inetAddress.hashCode());
-                        Log.i(TAG, "***** IP=" + ip);
-                        return ip;
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            Log.e(TAG, ex.toString());
-        }
-        return "127.0.0.1";
     }
 
 }
