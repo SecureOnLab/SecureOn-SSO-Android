@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             } catch (IOException e) {
-                Log.d("smoh", e.getMessage());
+                Log.e("smoh", e.getMessage());
             }
         }
 

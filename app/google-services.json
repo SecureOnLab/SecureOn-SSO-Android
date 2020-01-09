@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "495544131114",
+    "firebase_url": "https://safeidentity-sample.firebaseio.com",
+    "project_id": "safeidentity-sample",
+    "storage_bucket": "safeidentity-sample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495544131114:android:d098bacd895164116bad53",
+        "android_client_info": {
+          "package_name": "kr.co.secureon.sso.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "495544131114-ftl66vm431qdlcam0aniabg0vh14de6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApI7_a4fXEM5Ty8NPktuEsT8IN_0Rba5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "495544131114-ftl66vm431qdlcam0aniabg0vh14de6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

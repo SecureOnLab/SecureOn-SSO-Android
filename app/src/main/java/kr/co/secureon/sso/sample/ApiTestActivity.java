@@ -30,13 +30,23 @@ import static kr.co.secureon.sso.sample.LoginActivity.PAGE_URL;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class ApiTestActivity extends AppCompatActivity {
+
     LinearLayout apiTestLayout;
     RadioGroup radioGroup;
-    RadioButton putValueRadioBtn, getValueRadioBtn, getAllValuesRadioBtn;
-    RadioButton userPwdInitRadioBtn, userModifyPwdRadioBtn, userSearchRadioBtn;
-    Button actionBtn, loginActivityBtn;
-    TextView firstText, secondText, resultText;
-    EditText firstEditText, secondEditText;
+    RadioButton putValueRadioBtn;
+    RadioButton getValueRadioBtn;
+    RadioButton getAllValuesRadioBtn;
+    RadioButton userPwdInitRadioBtn;
+    RadioButton userModifyPwdRadioBtn;
+    RadioButton userSearchRadioBtn;
+    Button actionBtn;
+    Button loginActivityBtn;
+    TextView firstText;
+    TextView secondText;
+    TextView resultText;
+    EditText firstEditText;
+    EditText secondEditText;
+
     byte[] secId = null;
     MobileSsoAPI mobileSsoAPI;
 

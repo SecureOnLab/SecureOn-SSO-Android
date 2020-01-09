@@ -3,7 +3,6 @@ package kr.co.secureon.sso.sample;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,12 +15,9 @@ public class GetSecIdActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("smoh", getClass().getSimpleName() + " start");
-
-        byte[] secId = SsoUtil.getSecId(this.getApplicationContext());
+        byte[] secId = SsoUtil.getSecId(this);
         String secIdStr = "";
         if (secId != null) {
-            Log.d("smoh", getClass().getSimpleName() + ".secId : " + new String(secId));
             secIdStr = new String(secId);
         }
 

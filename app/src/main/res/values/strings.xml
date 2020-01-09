@@ -16,4 +16,8 @@
     <string name="logout">로그아웃</string>
     <string name="tag_name">태그명, 사용자ID</string>
     <string name="tag_value">태그값, 패스워드</string>
+
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="fcm_message">FCM Message</string>
 </resources>

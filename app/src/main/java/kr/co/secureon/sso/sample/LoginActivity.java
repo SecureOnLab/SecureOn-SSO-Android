@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,20 +20,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.sf.msso.MobileSsoAPI;
 import com.sf.msso.SsoUtil;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 public class LoginActivity extends Activity {
 
+    private static final String TAG = "LoginActivity";
+
     public static final String CLIENT_IP = "127.0.0.1";
-    public static final String PAGE_URL = "http://192.168.60.144:8080/android/exp_mobilesso.jsp";
+    public static final String PAGE_URL = "http://192.168.1.236:8080/android/exp_mobilesso.jsp";
 //    public static final String PAGE_URL = "http://192.168.2.2:8080/android/exp_mobilesso.jsp";
 
     ScrollView scrollView;
@@ -72,6 +75,26 @@ public class LoginActivity extends Activity {
 
         resultText = findViewById(R.id.resultText);
         resultText.setEnabled(false);    //textview 수정 안되도록 수정
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+
+                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
         if (getIntent() != null) {
             //웹에서 온경우
