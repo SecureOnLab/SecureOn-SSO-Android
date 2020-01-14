@@ -26,6 +26,21 @@
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
 
+## 네트워크 보안 설정
+
+안드로이드 9(API LEVEL 28)부터 http 통신이 제한되고 https 통신만 가능하기 때문에 http통신이 필요한 경우 아래 위치 파일에 API 서버의 아이피 또는 도메인 주소를 입력합니다.
+
+/res/xml/network_security_config.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.2.1</domain>
+    </domain-config>
+</network-security-config>
+```
+
 ## 모바일 SSO API
 
 모바일 SSO API에 대한 설명입니다.
@@ -94,5 +109,3 @@ if (mobileSsoAPI.deleteToken() == 0) {
     finish();  
 }
 ```
-
-

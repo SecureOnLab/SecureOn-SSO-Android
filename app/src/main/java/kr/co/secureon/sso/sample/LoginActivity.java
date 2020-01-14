@@ -37,8 +37,8 @@ public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
 
     public static final String CLIENT_IP = "127.0.0.1";
-    public static final String PAGE_URL = "http://192.168.1.236:8080/android/exp_mobilesso.jsp";
-//    public static final String PAGE_URL = "http://192.168.2.2:8080/android/exp_mobilesso.jsp";
+//    public static final String PAGE_URL = "http://192.168.1.236:8080/android/exp_mobilesso.jsp";
+    public static final String PAGE_URL = "http://192.168.2.1:8080/android/exp_mobilesso.jsp";
 
     ScrollView scrollView;
     EditText userIdEditText;
@@ -266,6 +266,8 @@ public class LoginActivity extends Activity {
                                     mobileSsoAPI.setToken(userId, token);
                                     resultText.setText(userId + "님이 로그인 하였습니다.");
 
+                                    mobileSsoAPI.addDevice(token, fcmToken);
+
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                 }
@@ -306,6 +308,8 @@ public class LoginActivity extends Activity {
                                 mobileSsoAPI.deleteToken();
                                 mobileSsoAPI.setToken(userId, token);
                                 resultText.setText(userId + "님이 로그인 하였습니다.");
+
+                                mobileSsoAPI.addDevice(token, fcmToken);
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
