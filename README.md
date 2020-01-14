@@ -14,7 +14,7 @@
 
 ## 빌드 환경
 
-- Android 4.0.3 (API level 15) 또는 이후 버전
+- Android 4.1 (API level 16) 또는 이후 버전
 - Java 8 또는 이후 버전
 
 ## 시스템 권한
