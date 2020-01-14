@@ -61,7 +61,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ### Security ID 생성
 
-스마트폰의 유니크 아이디를 생성할 수 있다.
+스마트폰의 IP가 고정이 불가능하기 때문에 대안으로 사용되는 기능입니다. 스마트폰의 유니크 아이디를 생성할 수 있다.
 
 ```java
 String securityId = SsoUtil.getSecId(this);
