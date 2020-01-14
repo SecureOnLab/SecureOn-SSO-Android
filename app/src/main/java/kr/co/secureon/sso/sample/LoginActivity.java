@@ -51,6 +51,7 @@ public class LoginActivity extends Activity {
     MobileSsoAPI mobileSsoAPI;
     byte[] securityId;
     String token;
+    String fcmToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class LoginActivity extends Activity {
                         }
 
                         // Get new Instance ID token
-                        String token = task.getResult().getToken();
+                        fcmToken = task.getResult().getToken();
 
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
@@ -220,6 +221,8 @@ public class LoginActivity extends Activity {
                                 mobileSsoAPI.deleteToken();
                                 mobileSsoAPI.setToken(userId, token);
                                 resultText.setText(userId + "님이 로그인 하였습니다.");
+
+                                mobileSsoAPI.addDevice(token, fcmToken);
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);

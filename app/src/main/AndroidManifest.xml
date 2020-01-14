@@ -72,7 +72,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="getSecId"
+                    android:host="getsecid"
                     android:scheme="com.softforum.sample" />
             </intent-filter>
 
