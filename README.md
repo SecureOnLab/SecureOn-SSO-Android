@@ -132,8 +132,6 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
         @JavascriptInterface
         @Override
         public void callNative(String token, String secId) {
-            Log.d("WebViewInterface", token);
-            Log.d("WebViewInterface", secId);
             webViewTestBtn.setText(String.format("{token: '%s', secId: '%s'}", token, secId));
         }
     }, "WebViewCallbackInterface");
