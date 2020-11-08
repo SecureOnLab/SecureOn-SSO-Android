@@ -3,6 +3,7 @@
     <string name="login_activity">Login Activity</string>
     <string name="main_activity">SafeIdentity Sample</string>
     <string name="webview_activity">웹 SSO</string>
+    <string name="webview_test_activity">웹뷰 테스트</string>
     <string name="api_test_activity">API 테스트</string>
     <string name="sso_api_test_activity">API 테스트</string>
     <string name="list_view_activity">API 리스트</string>
@@ -20,4 +21,6 @@
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">FCM Message</string>
+    <string name="webview_test">웹뷰 테스트</string>
+    <string name="set_token">Set Token</string>
 </resources>

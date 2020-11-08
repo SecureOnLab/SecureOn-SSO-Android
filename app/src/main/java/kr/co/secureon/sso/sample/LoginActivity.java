@@ -37,8 +37,8 @@ public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
 
     public static final String CLIENT_IP = "127.0.0.1";
-//    public static final String PAGE_URL = "http://192.168.1.236:8080/android/exp_mobilesso.jsp";
-    public static final String PAGE_URL = "http://192.168.2.1:8080/android/exp_mobilesso.jsp";
+    public static final String PAGE_URL = "http://192.168.1.236:8080/demo/android/exp_mobilesso.jsp";
+//    public static final String PAGE_URL = "http://192.168.2.1:8080/android/exp_mobilesso.jsp";
 
     ScrollView scrollView;
     EditText userIdEditText;
@@ -48,6 +48,7 @@ public class LoginActivity extends Activity {
     Button expLoginBtn;
     TextView resultText;
 
+    Button webViewTestBtn;
     MobileSsoAPI mobileSsoAPI;
     byte[] securityId;
     String token;
@@ -73,7 +74,7 @@ public class LoginActivity extends Activity {
         entLoginBtn = findViewById(R.id.entLoginBtn);
         stdLoginBtn = findViewById(R.id.stdLoginBtn);
         expLoginBtn = findViewById(R.id.expLoginBtn);
-
+        webViewTestBtn = findViewById(R.id.webViewTestBtn);
         resultText = findViewById(R.id.resultText);
         resultText.setEnabled(false);    //textview 수정 안되도록 수정
 
@@ -323,6 +324,13 @@ public class LoginActivity extends Activity {
                 }
             });
 
+            webViewTestBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), WebViewTestActivity.class);
+                    startActivity(intent);
+                }
+            });
 
         }
     }

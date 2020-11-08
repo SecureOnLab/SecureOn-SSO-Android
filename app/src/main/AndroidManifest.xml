@@ -47,6 +47,11 @@
             android:label="@string/webview_activity"></activity>
 
         <activity
+            android:name=".WebViewTestActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/webview_test_activity"></activity>
+
+        <activity
             android:name=".ApiTestActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/api_test_activity"></activity>

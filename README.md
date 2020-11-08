@@ -109,3 +109,61 @@ if (mobileSsoAPI.deleteToken() == 0) {
     finish();  
 }
 ```
+
+### 웹뷰 -> 네이티브
+
+웹뷰에서 네이티브로 토큰을 넘기는 방법론만 제공 되며 모바일 SSO API를 사용해 응용해서 개발하면 된다. WebViewTestActivity 와 WebViewTest.html가 샘플이다.
+
+```java
+private interface WebViewInterface{
+    void callNative(String token, String secI);
+}
+```
+
+```java
+@Override
+protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+    ...
+    
+    // 웹뷰에서 네이티브로 token과 secId를 보낸다.
+    webView.addJavascriptInterface(new WebViewInterface() {
+
+        @JavascriptInterface
+        @Override
+        public void callNative(String token, String secId) {
+            Log.d("WebViewInterface", token);
+            Log.d("WebViewInterface", secId);
+            webViewTestBtn.setText(String.format("{token: '%s', secId: '%s'}", token, secId));
+        }
+    }, "WebViewCallbackInterface");
+    
+    ...
+
+}
+```
+
+### 네이티브 -> 웹뷰
+
+네이티브에서 웹뷰로 토큰을 넘기는 방법론만 제공 되며 모바일 SSO API를 사용해 응용해서 개발하면 된다. WebViewTestActivity와 WebViewTest.html가 샘플이다.
+
+```objectivec
+@Override
+protected void onCreate(@Nullable Bundle savedInstanceState) {
+    ...
+
+    // 네이티브에서 -> 웹뷰로 token과 secid를 보낸다.
+    webViewTestBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webView.evaluateJavascript(String.format("javascript:setToken('%s', '%s');", token, new String(secId)), null);
+            } else {
+                webView.loadUrl(String.format("javascript:setToken('%s', '%s');", token, new String(secId)));
+            }
+        }
+    });
+  
+    ...
+}
+```
