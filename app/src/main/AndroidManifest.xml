@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kr.co.secureon.sso.sample">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,7 +17,8 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -68,7 +68,8 @@
 
         <activity
             android:name=".GetSecIdActivity"
-            android:label="@string/getUUID_activity">
+            android:label="@string/getUUID_activity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
